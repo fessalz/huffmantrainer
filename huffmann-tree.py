@@ -54,6 +54,7 @@ class HuffmanTreeApp:
         self.nodes = {}
         self.selected_nodes = []
         self.leaf_x = 10
+        self.added_texts = []
 
 
     def create_widgets(self):
@@ -133,7 +134,12 @@ class HuffmanTreeApp:
  
 
     def connect_mode(self, event):
-        item = self.canvas.find_closest(event.x, event.y)[0]
+        item = self.canvas.find_closest(event.x, event.y)
+        if not items:
+            return # Kein Element gefunden
+
+        item = items[0]
+        
         if item in self.nodes:
             node = self.nodes[item]
             if node.is_connected:
@@ -159,9 +165,9 @@ class HuffmanTreeApp:
         """Fügt eine Beschriftung an der Position des Mausklicks ein."""
         label = "0" if event.num == 1 else "1" if event.num == 3 else ""
         if label:
-            self.canvas.create_text(event.x, event.y, text=label, font=('Helvetica', '16'))
- 
- 
+            text_id = self.canvas.create_text(event.x, event.y, text=label, font=('Helvetica', '16'))
+            self.added_texts.append(text_id)
+             
     def on_drag(self, event):
         item = self.canvas.find_closest(event.x, event.y)[0]
         if item in self.nodes:
